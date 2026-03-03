@@ -14,12 +14,12 @@
   <!-- 회원가입 -->
   <insert id="signup">
     INSERT INTO MEMBER (
-      MEMBER_NO, MEMBER_EMAIL, MEMBER_PW,
-      MEMBER_NICKNAME, MEMBER_TEL
+      MEMBER_NO, MEMBER_EMAIL, MEMBER_PW, MEMBER_NICKNAME, MEMBER_DEL_FL
+      <if test="memberTel != null">, MEMBER_TEL</if>
     ) VALUES (
       SEQ_MEMBER_NO.NEXTVAL,
-      #{memberEmail}, #{memberPw},
-      #{memberNickname}, #{memberTel}
+      #{memberEmail}, #{memberPw}, #{memberNickname}, 'N'
+      <if test="memberTel != null">, #{memberTel}</if>
     )
   </insert>
 
