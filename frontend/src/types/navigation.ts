@@ -3,7 +3,10 @@ export type AuthStackParamList = {
   Signup: undefined;
 };
 
-export type AppStackParamList = {
-  Home: undefined;
-  // TODO: 추가 화면 등록
+export type AppTabParamList = {
+  Home:     undefined;
+  History:  undefined;
+  Map:      undefined;
+  Bookmark: undefined;
+  MyPage:   undefined;
 };
