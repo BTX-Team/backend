@@ -10,9 +10,7 @@ import MyPageScreen   from '../screens/mypage/MyPageScreen';
 
 const Tab = createBottomTabNavigator();
 
-type TabName = 'Home' | 'History' | 'Map' | 'Bookmark' | 'MyPage';
-
-const ICONS: Record<TabName, { on: string; off: string }> = {
+const ICONS = {
   Home:     { on: 'home',            off: 'home-outline'           },
   History:  { on: 'bag-handle',      off: 'bag-handle-outline'     },
   Map:      { on: 'compass',         off: 'compass-outline'        },
@@ -20,7 +18,7 @@ const ICONS: Record<TabName, { on: string; off: string }> = {
   MyPage:   { on: 'person',          off: 'person-outline'         },
 };
 
-const LABELS: Record<TabName, string> = {
+const LABELS = {
   Home:     '홈',
   History:  '사용내역',
   Map:      '지도',
@@ -34,9 +32,8 @@ export default function AppNavigator() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
-          const name = route.name as TabName;
-          const icon = focused ? ICONS[name].on : ICONS[name].off;
-          return <Ionicons name={icon as any} size={size} color={color} />;
+          const icon = focused ? ICONS[route.name].on : ICONS[route.name].off;
+          return <Ionicons name={icon} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#7C3AED',
         tabBarInactiveTintColor: '#9CA3AF',

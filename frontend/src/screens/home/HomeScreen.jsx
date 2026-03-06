@@ -93,15 +93,7 @@ const TDAY_STORES = [
 ];
 
 // ── StoreCard ──────────────────────────────────────────────
-function StoreCard({
-  store,
-  isLiked,
-  onToggleLike,
-}: {
-  store: (typeof NEARBY_STORES)[0];
-  isLiked: boolean;
-  onToggleLike: () => void;
-}) {
+function StoreCard({ store, isLiked, onToggleLike }) {
   const pressScale = useRef(new Animated.Value(1)).current;
   const heartScale = useRef(new Animated.Value(1)).current;
 
@@ -165,7 +157,7 @@ function StoreCard({
 }
 
 // ── TDayCard ───────────────────────────────────────────────
-function TDayCard({ store }: { store: (typeof TDAY_STORES)[0] }) {
+function TDayCard({ store }) {
   const pressScale = useRef(new Animated.Value(1)).current;
 
   return (
@@ -224,7 +216,7 @@ export default function HomeScreen() {
   const sec2Slide   = useRef(new Animated.Value(20)).current;
 
   const [displayAmt, setDisplayAmt] = useState(0);
-  const [likedIds, setLikedIds] = useState<Set<number>>(
+  const [likedIds, setLikedIds] = useState(
     () => new Set(NEARBY_STORES.filter(s => s.liked).map(s => s.id)),
   );
 
@@ -294,7 +286,7 @@ export default function HomeScreen() {
     outputRange: ['-4deg', '0deg', '4deg'],
   });
 
-  const toggleLike = (id: number) => {
+  const toggleLike = (id) => {
     setLikedIds(prev => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
@@ -340,7 +332,7 @@ export default function HomeScreen() {
 
           {/* 마스코트 - 절대 위치 고정 */}
           <Image
-            source={require('../../../assets/캐릭터.png')}
+            source={require('../../../assets/characters/캐릭터.png')}
             style={styles.mascot}
             resizeMode="contain"
           />
@@ -353,7 +345,7 @@ export default function HomeScreen() {
           <View style={styles.savingsBody}>
             {/* 돈 주머니 이미지 */}
             <Image
-              source={require('../../../assets/메인화면 아이콘.png')}
+              source={require('../../../assets/icons/메인화면 아이콘.png')}
               style={styles.moneyBagImg}
               resizeMode="contain"
             />
