@@ -9,6 +9,7 @@ import {
   Dimensions,
   StatusBar,
   Pressable,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +18,7 @@ import { useAuth } from '../../context/AuthContext';
 const { width: SW } = Dimensions.get('window');
 const CARD_W = SW * 0.50;
 const PURPLE = '#7C3AED';
-const CARD_BG = '#3730A3';
+const CARD_BG = '#6200EA'; // 밝은 보라
 const SAVINGS = 13700;
 const GOAL = 25000;
 
@@ -303,66 +304,65 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#F0EEFF" />
       <ScrollView showsVerticalScrollIndicator={false} bounces>
 
-        {/* ── 헤더 ── */}
+        {/* ── 헤더 + 검색바 (relative로 마스코트 절대 배치) ── */}
         <Animated.View
-          style={[styles.header, { opacity: headerFade, transform: [{ translateY: headerSlide }] }]}
+          style={[styles.topSection, { opacity: headerFade, transform: [{ translateY: headerSlide }] }]}
         >
-          {/* 왼쪽: 인사 + 위치 */}
-          <View style={styles.headerLeft}>
+          {/* 상단 아이콘 행 */}
+          <View style={styles.topIcons}>
+            <TouchableOpacity style={styles.bellWrap}>
+              <Ionicons name="notifications-outline" size={26} color="#111827" />
+              <View style={styles.notiBadge} />
+            </TouchableOpacity>
+            <View style={styles.avatar} />
+          </View>
+
+          {/* 인사말 + 위치 (오른쪽 여백으로 마스코트 공간 확보) */}
+          <View style={styles.greetingSection}>
             <Text style={styles.greeting}>안녕하세요,</Text>
             <Text style={styles.userName}>김인하님</Text>
             <View style={styles.locationRow}>
-              <Ionicons name="location-sharp" size={13} color={PURPLE} />
+              <Ionicons name="location-outline" size={16} color="#374151" />
               <Text style={styles.locationText} numberOfLines={1}>
                 인천광역시 미추홀구 인하로 100
               </Text>
             </View>
           </View>
 
-          {/* 오른쪽: 아이콘 + 마스코트 */}
-          <View style={styles.headerRight}>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity style={styles.bellWrap}>
-                <Ionicons name="notifications" size={23} color="#374151" />
-                <View style={styles.notiBadge} />
-              </TouchableOpacity>
-              <View style={styles.avatar} />
-            </View>
-            <Animated.Image
-              source={require('../../../assets/캐릭터.png')}
-              style={[
-                styles.mascot,
-                { transform: [{ translateY: mascotY }, { rotate: rotateDeg }] },
-              ]}
-              resizeMode="contain"
-            />
-          </View>
-        </Animated.View>
+          {/* 검색바 (오른쪽 여백으로 마스코트 공간 확보) */}
+          <TouchableOpacity style={styles.searchBar} activeOpacity={0.85}>
+            <Ionicons name="search" size={16} color="#9CA3AF" />
+            <Text style={styles.searchText}>나에게 딱맞는 혜택 정보 검색</Text>
+          </TouchableOpacity>
 
-        {/* ── 검색바 ── */}
-        <TouchableOpacity style={styles.searchBar} activeOpacity={0.85}>
-          <Ionicons name="search" size={15} color="#9CA3AF" />
-          <Text style={styles.searchText}>나에게 딱맞는 혜택 정보 검색</Text>
-        </TouchableOpacity>
+          {/* 마스코트 - 절대 위치 고정 */}
+          <Image
+            source={require('../../../assets/캐릭터.png')}
+            style={styles.mascot}
+            resizeMode="contain"
+          />
+        </Animated.View>
 
         {/* ── 절약 카드 ── */}
         <Animated.View
           style={[styles.savingsCard, { opacity: cardFade, transform: [{ scale: cardScale }] }]}
         >
-          <View style={[styles.bubble, styles.bubble1]} />
-          <View style={[styles.bubble, styles.bubble2]} />
-
-          <Text style={styles.savingsQ}>
-            <Text style={styles.savingsName}>김인하</Text>
-            <Text style={styles.savingsQText}> 님이 지금까지 절약한 금액은?</Text>
-          </Text>
-
           <View style={styles.savingsBody}>
-            <Text style={styles.moneyBag}>💰</Text>
+            {/* 돈 주머니 이미지 */}
+            <Image
+              source={require('../../../assets/메인화면 아이콘.png')}
+              style={styles.moneyBagImg}
+              resizeMode="contain"
+            />
+            {/* 우측 텍스트 + 바 + 금액 */}
             <View style={styles.savingsRight}>
+              <Text style={styles.savingsQ}>
+                <Text style={styles.savingsName}>김인하</Text>
+                <Text style={styles.savingsQText}> 님이 지금까지 절약한 금액은?</Text>
+              </Text>
               <View style={styles.progressTrack}>
                 <Animated.View style={[styles.progressFill, { width: progressWidth }]} />
               </View>
@@ -412,80 +412,99 @@ export default function HomeScreen() {
 
 // ── Styles ─────────────────────────────────────────────────
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#F0EEFF' },
 
-  // 헤더
-  header: {
+  // 헤더 + 검색바 영역 (relative → 마스코트 절대 배치용)
+  topSection: {
+    backgroundColor: '#F0EEFF',
+    position: 'relative',
+    paddingBottom: 0,
+  },
+
+  // 상단 아이콘 행 (오른쪽 정렬)
+  topIcons: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    backgroundColor: '#fff',
-  },
-  headerLeft: { flex: 1, paddingRight: 8, paddingBottom: 4 },
-  greeting:   { fontSize: 14, color: '#6B7280', fontWeight: '500' },
-  userName:   {
-    fontSize: 28, fontWeight: '800', color: '#111827',
-    marginTop: 2, letterSpacing: -0.5,
-  },
-  locationRow:  { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
-  locationText: { fontSize: 12, color: '#6B7280', marginLeft: 3, flex: 1 },
-
-  // 헤더 우측
-  headerRight: {
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: -24, // 마스코트가 검색바 위로 살짝 겹치도록
+    paddingHorizontal: 20,
+    paddingTop: 18,
+    gap: 12,
   },
-  headerIcons: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 2 },
   bellWrap: { position: 'relative', padding: 2 },
   notiBadge: {
-    position: 'absolute', top: 2, right: 2,
+    position: 'absolute', top: 1, right: 1,
     width: 9, height: 9, borderRadius: 5,
-    backgroundColor: '#EF4444', borderWidth: 1.5, borderColor: '#fff',
+    backgroundColor: '#EF4444', borderWidth: 1.5, borderColor: '#F0EEFF',
   },
   avatar: {
-    width: 34, height: 34, borderRadius: 17,
-    backgroundColor: '#D1D5DB',
+    width: 42, height: 42, borderRadius: 21,
+    backgroundColor: '#9CA3AF',
   },
-  mascot: { width: 108, height: 108 },
 
-  // 검색바
+  // 인사말 영역 (오른쪽 여백으로 마스코트 공간)
+  greetingSection: {
+    paddingLeft: 24,
+    paddingRight: 155,
+    marginTop: 12,
+  },
+  greeting: { fontSize: 17, color: '#6B7280', fontWeight: '400' },
+  userName: {
+    fontSize: 38, fontWeight: '900', color: '#111827',
+    marginTop: 2, letterSpacing: -1,
+  },
+  locationRow:  { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
+  locationText: { fontSize: 14, color: '#374151', marginLeft: 4, flex: 1 },
+
+  // 검색바 (오른쪽 여백으로 마스코트 공간)
   searchBar: {
     flexDirection: 'row', alignItems: 'center',
-    marginHorizontal: 20, marginTop: 12, marginBottom: 16,
-    backgroundColor: '#F9FAFB',
-    borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13,
-    borderWidth: 1, borderColor: '#E5E7EB',
+    marginLeft: 20,
+    marginRight: 148,
+    marginTop: 18,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 18, paddingVertical: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
   },
   searchText: { color: '#9CA3AF', fontSize: 14, marginLeft: 8 },
+
+  // 마스코트 (절대 위치 - 우측)
+  mascot: {
+    position: 'absolute',
+    right: 0,
+    bottom: -30,
+    width: 148,
+    height: 188,
+  },
 
   // 절약 카드
   savingsCard: {
     marginHorizontal: 16, marginBottom: 24,
     backgroundColor: CARD_BG,
-    borderRadius: 16, padding: 18,
+    borderRadius: 22, padding: 20,
     overflow: 'hidden',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)',
     shadowColor: CARD_BG,
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.45,
-    shadowRadius: 14,
-    elevation: 8,
+    shadowOpacity: 0.5,
+    shadowRadius: 16,
+    elevation: 10,
   },
-  bubble:  { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.07)' },
-  bubble1: { width: 150, height: 150, top: -55, right: -35 },
-  bubble2: { width: 90,  height: 90,  bottom: -40, left: 20 },
-  savingsQ:     { marginBottom: 16, zIndex: 1 },
-  savingsName:  { color: '#FCD34D', fontWeight: '800', fontSize: 15 },
-  savingsQText: { color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: '500' },
-  savingsBody:  { flexDirection: 'row', alignItems: 'center', zIndex: 1 },
-  moneyBag:     { fontSize: 52, marginRight: 14 },
-  savingsRight: { flex: 1 },
+  savingsBody:   { flexDirection: 'row', alignItems: 'center' },
+  moneyBagImg:   { width: 88, height: 88, marginRight: 14 },
+  savingsRight:  { flex: 1 },
+  savingsQ:      { marginBottom: 12 },
+  savingsName:   { color: '#fff', fontWeight: '900', fontSize: 16 },
+  savingsQText:  { color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: '400' },
   progressTrack: {
-    height: 12, backgroundColor: 'rgba(255,255,255,0.25)',
-    borderRadius: 6, overflow: 'hidden',
+    height: 10, backgroundColor: 'rgba(255,255,255,0.3)',
+    borderRadius: 5, overflow: 'hidden',
   },
-  progressFill:  { height: 12, backgroundColor: '#EF4444', borderRadius: 6 },
+  progressFill: { height: 10, backgroundColor: '#EF4444', borderRadius: 5 },
   savingsAmt: {
     color: '#fff', fontSize: 28, fontWeight: '800',
     textAlign: 'right', marginTop: 10, letterSpacing: -0.5,
