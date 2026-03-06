@@ -14,8 +14,8 @@ type TabName = 'Home' | 'History' | 'Map' | 'Bookmark' | 'MyPage';
 
 const ICONS: Record<TabName, { on: string; off: string }> = {
   Home:     { on: 'home',            off: 'home-outline'           },
-  History:  { on: 'receipt',         off: 'receipt-outline'        },
-  Map:      { on: 'map',             off: 'map-outline'            },
+  History:  { on: 'bag-handle',      off: 'bag-handle-outline'     },
+  Map:      { on: 'compass',         off: 'compass-outline'        },
   Bookmark: { on: 'heart',           off: 'heart-outline'          },
   MyPage:   { on: 'person',          off: 'person-outline'         },
 };
