@@ -5,6 +5,16 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -14,11 +24,20 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
 ### VS Code ###
 .vscode/
 
-### Java ###
-*.class
+### Mac ###
+.DS_Store
 
-# DB 연결 정보 등 민감 설정 (실제 값 입력 후 커밋 방지)
-src/main/resources/config.properties
+### Secrets ###
+src/main/resources/application.yml
+image.png
+.claude/
